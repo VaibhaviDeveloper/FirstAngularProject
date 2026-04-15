@@ -1,0 +1,15 @@
+<button class="container" (click)="handleClick($event)">
+<section class="listing">
+    @if (location().wifi) {
+      <span class="wifi-badge">📶 WiFi Available</span>
+    }
+      <img
+        class="listing-photo"
+        [src]="location().photo"
+        alt="Exterior photo of {{ location().name }}"
+        crossorigin
+      />
+      <h2 class="listing-heading">{{ location().name }}</h2>
+      <p class="listing-location">{{ location().city }}, {{ location().state }}</p>
+    </section>
+</button>
