@@ -1,0 +1,69 @@
+@if (location(); as loc) {
+  <div class="details-container">
+
+    <div class="top-bar">
+      <button class="back-btn" (click)="goBack()">← Back</button>
+
+      <div class="nav-buttons">
+        <button
+          class="nav-btn"
+          (click)="goPrev()"
+          [disabled]="!hasPrev()"
+          title="Previous property"
+        >
+          ‹ Prev
+        </button>
+        <button
+          class="nav-btn"
+          (click)="goNext()"
+          [disabled]="!hasNext()"
+          title="Next property"
+        >
+          Next ›
+        </button>
+      </div>
+    </div>
+
+    <img
+      class="details-photo"
+      [src]="loc.photo"
+      alt="Exterior photo of {{ loc.name }}"
+      crossorigin
+    />
+
+    <div class="details-info">
+      <div class="details-header">
+        <div>
+          <h1>{{ loc.name }}</h1>
+          <p class="location">{{ loc.city }}, {{ loc.state }}</p>
+        </div>
+        <button class="delete-btn" (click)="requestDelete()">🗑 Delete</button>
+      </div>
+
+      <ul class="features">
+        <li>Available Units: <strong>{{ loc.availableUnits }}</strong></li>
+        <li>WiFi:    <strong>{{ loc.wifi    ? 'Yes' : 'No' }}</strong></li>
+        <li>Laundry: <strong>{{ loc.laundry ? 'Yes' : 'No' }}</strong></li>
+      </ul>
+    </div>
+
+  </div>
+} @else {
+  <div class="details-container">
+    <button class="back-btn" (click)="goBack()">← Back</button>
+    <p>Property not found.</p>
+  </div>
+}
+
+@if (showConfirm()) {
+  <div class="overlay">
+    <div class="confirm-dialog">
+      <h2>Delete Property?</h2>
+      <p>Are you sure you want to delete <strong>{{ location()?.name }}</strong>? This cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="cancel-btn"  (click)="cancelDelete()">Cancel</button>
+        <button class="confirm-btn" (click)="confirmDelete()">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+}

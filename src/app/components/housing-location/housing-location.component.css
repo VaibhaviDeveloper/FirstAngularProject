@@ -14,35 +14,43 @@
   border-radius: 30px 30px 0 0;
 }
 .listing-location {
+  display:flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 20px 20px 20px;
 }
 .listing-location::before {
   content: url('/location-pin.svg') / '';
 }
-section.listing a {
-  padding-left: 20px;
-  text-decoration: none;
-  color: var(--primary-color);
+.wifi-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 10px 20px 0;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.75rem;
 }
-section.listing a::after {
-  content: '\203A';
-  margin-left: 5px;
-}
-
-.container{
-    display: inline-block;
-    width: 100%;
-    border:none;
-    background:none;
-    padding: 0;
-    cursor:pointer;
-    transition: 
+.container {
+  display: inline-block;
+  width: 100%;
+  border: 2px solid transparent;   
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transition:
     transform 0.15s ease,
-    box-shadow 0.15s ease;
-    border-radius: 30px;
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+  border-radius: 30px;
+}
+.container:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.container:active{
-    transform: scale(0.97);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+.container.selected {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--secondary-color);
 }

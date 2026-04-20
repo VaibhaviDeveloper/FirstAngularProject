@@ -118,6 +118,25 @@ export class HousingServiceService {
   getAllLocations(){
     return this.housingLocationList();
   }
+  getLocationById(id: number): HousingLocationInfo | undefined {
+  return this.housingLocationList().find(loc => loc.id === id);
+}
 
+
+getNextLocation(id: number): HousingLocationInfo | undefined {
+    const list = this.housingLocationList();
+    const index = list.findIndex(loc => loc.id === id);
+    return index !== -1 && index < list.length - 1 ? list[index + 1] : undefined;
+}
+
+getPrevLocation(id: number): HousingLocationInfo | undefined {
+    const list = this.housingLocationList();
+    const index = list.findIndex(loc => loc.id === id);
+    return index > 0 ? list[index - 1] : undefined;
+}
+
+deleteLocation(id: number): void {
+    this.housingLocationList.update(list => list.filter(loc => loc.id !== id));
+}
   
 }

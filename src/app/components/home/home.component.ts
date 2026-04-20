@@ -1,25 +1,66 @@
 import { Component, inject, signal } from '@angular/core';
-import { HousingLocationComponent } from "../housing-location/housing-location.component";
-import { HousingLocationInfo } from "../../models/housing-location-info";
-import { CounterComponent } from "../counter/counter.component";
+import { Router } from '@angular/router';
+import { HousingLocationComponent } from '../housing-location/housing-location.component';
+import { HousingLocationInfo } from '../../models/housing-location-info';
 import { HousingServiceService } from '../../services/housing-service.service';
+
+type Mode = 'normal' | 'edit';
+
 @Component({
   selector: 'app-home',
-  imports: [HousingLocationComponent, CounterComponent],
+  imports: [HousingLocationComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-   
-   clickCount = signal(0);
-  readonly housingService= inject(HousingServiceService); // This is a hardwired dependency!! And from outside , we can not chnage this dependency.
-  //Consuming shared instance maintained by Angular's DI system.
 
-  constructor(){
-    this.housingService=inject(HousingServiceService);
+  private router = inject(Router);
+  readonly housingService = inject(HousingServiceService);
+
+  mode        = signal<Mode>('normal');
+  selectedIds = signal<Set<number>>(new Set());
+  showConfirm = signal(false);
+
+  
+toggleMode(): void {
+    if (this.mode() === 'edit') {
+      this.mode.set('normal');
+      this.selectedIds.set(new Set());
+    } else {
+      this.mode.set('edit');
+    }
   }
-handleLocationClicked(location: HousingLocationInfo) {
-  this.clickCount.update(count => count + 1);
-  //this.housingService.updateLocation(location);
-}
+
+  handleLocationClicked(location: HousingLocationInfo): void {
+    if (this.mode() === 'normal') {
+      this.router.navigate(['/details', location.id]);
+    } else {
+      const current = new Set(this.selectedIds());
+      if (current.has(location.id)) {
+        current.delete(location.id);
+      } else {
+        current.add(location.id);
+      }
+      this.selectedIds.set(current);
+    }
+  }
+
+  isSelected(id: number): boolean {
+    return this.selectedIds().has(id);
+  }
+
+  requestDeleteSelected(): void {
+    this.showConfirm.set(true);
+  }
+
+  cancelDelete(): void {
+    this.showConfirm.set(false);
+  }
+
+  confirmDeleteSelected(): void {
+    this.selectedIds().forEach(id => this.housingService.deleteLocation(id));
+    this.selectedIds.set(new Set());
+    this.showConfirm.set(false);
+    this.mode.set('normal');
+  }
 }
