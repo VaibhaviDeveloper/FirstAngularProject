@@ -30,6 +30,7 @@ export class LinkedSignalDemoComponent {
 //  })
 //  }
 
+//Linked Signal has a live dependency , supplied as a callback . This callbcak will use dependent signal to compute the value that it wants . However , it is also possible to override the value of linked signal is writable.
  notificationsEnabled = linkedSignal(() => this.userStatus() === 'online');
 
   statusMessage = computed(() => {

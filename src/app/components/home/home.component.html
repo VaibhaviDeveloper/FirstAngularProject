@@ -10,23 +10,24 @@
     {{ mode() === 'normal' ? 'Edit' : 'Done' }}
   </button>
   @if (mode() === 'edit') {
-    <span class="selection-hint">{{ selectedIds().size }} selected</span>
-    @if (selectedIds().size > 0) {
+    <span class="selection-hint">{{ selectedCount() }} selected</span>
+    @if (selectedCount() > 0) {
       <button class="delete-selected-btn" (click)="requestDeleteSelected()">
-        🗑 Delete ({{ selectedIds().size }})
+        🗑 Delete ({{ selectedCount() }})
       </button>
     }
   }
 </section>
 
-
 @if (showConfirm()) {
   <div class="overlay">
     <div class="confirm-dialog">
       <h2>Delete Properties?</h2>
-      <p>Are you sure you want to delete <strong>{{ selectedIds().size }} propert{{ selectedIds().size === 1 ? 'y' : 'ies' }}</strong>? This cannot be undone.</p>
+      <p>Are you sure you want to delete 
+        <strong>{{ selectedCount() }} propert{{ selectedCount() === 1 ? 'y' : 'ies' }}</strong>?
+      </p>
       <div class="confirm-actions">
-        <button class="cancel-btn"  (click)="cancelDelete()">Cancel</button>
+        <button class="cancel-btn" (click)="cancelDelete()">Cancel</button>
         <button class="confirm-btn" (click)="confirmDeleteSelected()">Yes, Delete</button>
       </div>
     </div>
@@ -34,10 +35,10 @@
 }
 
 <section class="results">
-  @for (housingLocation of housingService.getAllLocations(); track housingLocation.id) {
+  @for (housingLocation of viewModelList(); track housingLocation.id) {
     <app-housing-location
       [location]="housingLocation"
-      [isSelected]="isSelected(housingLocation.id)"
+      [isSelected]="housingLocation.isSelected"
       [mode]="mode()"
       (onLocationClick)="handleLocationClicked($event)"
     />

@@ -1,4 +1,4 @@
-import { Component, inject, linkedSignal, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
 import { HousingLocationInfo } from '../../models/housing-location-info';
@@ -19,20 +19,23 @@ export class HomeComponent {
   readonly housingService = inject(HousingServiceService);
 
   mode        = signal<Mode>('normal');
-  selectedIds = signal<Set<number>>(new Set());
+  //selectedIds = signal<Set<number>>(new Set());
   showConfirm = signal(false);
 
   viewModelList = linkedSignal<HousingLocationViewModel[]>(() => 
-    this.housingService.housingLocationList().map(location => ({
+    this.housingService.getAllLocations().map(location => ({
     ...location,
     isSelected: false
   })));
 
+  selectedCount = computed(() => 
+  this.viewModelList().filter(loc => loc.isSelected).length
+);
 toggleMode(): void {
     if (this.mode() === 'edit') {
       this.mode.set('normal');
-
-      this.selectedIds.set(new Set());
+      this.viewModelList.update(list => list.map(loc => ({ ...loc, isSelected: false })));//resetting the isSelected property of all locations to false when switching back to normal mode.
+      //this.selectedIds.set(new Set());
     } else {
       this.mode.set('edit');
     }
@@ -42,19 +45,20 @@ toggleMode(): void {
     if (this.mode() === 'normal') {
       this.router.navigate(['/details', location.id]);
     } else {
-      const current = new Set(this.selectedIds());
-      if (current.has(location.id)) {
-        current.delete(location.id);
-      } else {
-        current.add(location.id);
-      }
-      this.selectedIds.set(current);
+      // const current = new Set(this.selectedIds());
+      // if (current.has(location.id)) {
+      //   current.delete(location.id);
+      // } else {
+      //   current.add(location.id);
+      // }
+      // this.selectedIds.set(current);
+      this.viewModelList.update(list => list.map(loc => loc.id === location.id ? { ...loc, isSelected: !loc.isSelected } : loc)); //toggling the isSelected property of the clicked location in edit mode.
     }
   }
 
-  isSelected(id: number): boolean {
-    return this.selectedIds().has(id);
-  }
+  // isSelected(id: number): boolean {
+  //   return this.viewModelList().some(loc => loc.id === id && loc.isSelected);
+  // }
 
   requestDeleteSelected(): void {
     this.showConfirm.set(true);
@@ -65,9 +69,9 @@ toggleMode(): void {
   }
 
   confirmDeleteSelected(): void {
-    this.selectedIds().forEach(id => this.housingService.deleteLocation(id));
-    this.selectedIds.set(new Set());
-    this.showConfirm.set(false);
+    this.viewModelList.update(list =>
+      list.filter(item => !item.isSelected)  
+    );
     this.mode.set('normal');
   }
 }
