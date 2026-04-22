@@ -1,9 +1,10 @@
 // Add linkedSignal to existing imports
 import {Component, signal, computed, linkedSignal, ChangeDetectionStrategy, effect} from '@angular/core';
+import { ShippingOptionsComponent } from "@components/shipping-options/shipping-options.component";
 
 @Component({
   selector: 'app-linked-signal-demo',
-  imports: [],
+  imports: [ShippingOptionsComponent],
   templateUrl: './linked-signal-demo.component.html',
   styleUrl: './linked-signal-demo.component.css'
 })
