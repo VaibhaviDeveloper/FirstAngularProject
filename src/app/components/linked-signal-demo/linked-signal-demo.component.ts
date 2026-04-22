@@ -1,5 +1,5 @@
 // Add linkedSignal to existing imports
-import {Component, signal, computed, linkedSignal, ChangeDetectionStrategy} from '@angular/core';
+import {Component, signal, computed, linkedSignal, ChangeDetectionStrategy, effect} from '@angular/core';
 
 @Component({
   selector: 'app-linked-signal-demo',
@@ -9,6 +9,27 @@ import {Component, signal, computed, linkedSignal, ChangeDetectionStrategy} from
 })
 export class LinkedSignalDemoComponent {
  userStatus = signal<'online' | 'away' | 'offline'>('offline');
+ notificationPreference=signal<boolean>(this.userStatus()==='online');
+
+ notificationEffect = effect(()=>{
+   if(this .userStatus()==='online'){
+    this.notificationPreference.set(true);
+   } else {
+    this.notificationPreference.set(false);
+
+   }
+ })
+//  constructor(){
+//   effect(()=>{
+//    if(this .userStatus()==='online'){
+//     this.notificationPreference.set(true);
+//    } else {
+//     this.notificationPreference.set(false);
+
+//    }
+//  })
+//  }
+
  notificationsEnabled = linkedSignal(() => this.userStatus() === 'online');
 
   statusMessage = computed(() => {
@@ -34,14 +55,17 @@ export class LinkedSignalDemoComponent {
 
  goOnline() {
     this.userStatus.set('online');
+    //this.notificationPreference.set(true);
   }
 
   goAway() {
     this.userStatus.set('away');
+    //this.notificationPreference.set(false);
   }
 
   goOffline() {
     this.userStatus.set('offline');
+    //this.notificationPreference.set(false);
   }
 
   toggleStatus() {
@@ -49,6 +73,7 @@ export class LinkedSignalDemoComponent {
     switch (current) {
       case 'offline':
         this.userStatus.set('online');
+        
         break;
       case 'online':
         this.userStatus.set('away');
@@ -59,7 +84,9 @@ export class LinkedSignalDemoComponent {
     }
   }
   toggleNotifications() {
-  this.notificationsEnabled.set(!this.notificationsEnabled());
+ // this.notificationsEnabled.set(!this.notificationsEnabled());
+ //Implementating the same thing without using LinkedSignal
+   this.notificationPreference.update(prev=>!prev);
 }
 
 }

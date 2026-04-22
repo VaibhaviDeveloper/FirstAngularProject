@@ -12,7 +12,7 @@ export class HousingServiceService {
   readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
     
     
-  private housingLocationList=signal<HousingLocationInfo[]>([
+  readonly housingLocationList=signal<HousingLocationInfo[]>([
     {
       id: 0,
       name: 'Acme Fresh Start Housing',

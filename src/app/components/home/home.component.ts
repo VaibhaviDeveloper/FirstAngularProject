@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, linkedSignal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
 import { HousingLocationInfo } from '../../models/housing-location-info';
 import { HousingServiceService } from '../../services/housing-service.service';
+import { HousingLocationViewModel } from '../housing-location/housing-location-view-model';
 
 type Mode = 'normal' | 'edit';
 
@@ -21,10 +22,16 @@ export class HomeComponent {
   selectedIds = signal<Set<number>>(new Set());
   showConfirm = signal(false);
 
-  
+  viewModelList = linkedSignal<HousingLocationViewModel[]>(() => 
+    this.housingService.housingLocationList().map(location => ({
+    ...location,
+    isSelected: false
+  })));
+
 toggleMode(): void {
     if (this.mode() === 'edit') {
       this.mode.set('normal');
+
       this.selectedIds.set(new Set());
     } else {
       this.mode.set('edit');
