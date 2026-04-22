@@ -19,8 +19,17 @@ export class ShippingOptionsComponent {
     'Road'
      ])
 
-     userSelectedShippingOption = linkedSignal(()=>this.shippingOptions()[0]);
-
+     //userSelectedShippingOption = linkedSignal(()=>this.shippingOptions()[0]);
+      userSelectedShippingOption = linkedSignal<string[],string>({
+        source:this.shippingOptions,
+         computation:(newDependencyValue,myPreviousValue):string=>{
+            if(newDependencyValue.includes(myPreviousValue?.value as string)){
+                return myPreviousValue?.value ??"";   
+              }else{
+                return newDependencyValue[0];
+              }
+            },
+      });
      changeShippingOption(){
         this.shippingOptions.set([
       'Email',
@@ -29,7 +38,7 @@ export class ShippingOptionsComponent {
     ]);
      }
      handleUserInput(event:Event){
-            const userSelectedOptionName = (event.target as HTMLInputElement).value;
+           const userSelectedOptionName = (event.target as HTMLInputElement).value;
            console.log((event.target as HTMLInputElement).value);
            this.userSelectedShippingOption.set(userSelectedOptionName);
      }

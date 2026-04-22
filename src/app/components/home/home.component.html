@@ -9,6 +9,8 @@
   <button class="primary" type="button" (click)="toggleMode()">
     {{ mode() === 'normal' ? 'Edit' : 'Done' }}
   </button>
+  <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
+
   @if (mode() === 'edit') {
     <span class="selection-hint">{{ selectedCount() }} selected</span>
     @if (selectedCount() > 0) {
@@ -17,6 +19,9 @@
       </button>
     }
   }
+  <!-- @if (mode()==='normal') {
+    <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
+  } -->
 </section>
 
 @if (showConfirm()) {
@@ -35,7 +40,7 @@
 }
 
 <section class="results">
-  @for (housingLocation of viewModelList(); track housingLocation.id) {
+  @for (housingLocation of locationsToDisplay(); track housingLocation.id) {
     <app-housing-location
       [location]="housingLocation"
       [isSelected]="housingLocation.isSelected"

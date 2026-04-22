@@ -12,7 +12,7 @@ export class HousingServiceService {
   readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
     
     
- private  readonly housingLocationList=signal<HousingLocationInfo[]>([
+private housingLocationList: HousingLocationInfo[] =[
     {
       id: 0,
       name: 'Acme Fresh Start Housing',
@@ -113,30 +113,38 @@ export class HousingServiceService {
       wifi: true,
       laundry: true,
     },
-  ]);
+  ];
+
+readonly locations = signal<HousingLocationInfo[]>(this.housingLocationList);
 
   getAllLocations(){
-    return this.housingLocationList();
+    return this.locations();
   }
   getLocationById(id: number): HousingLocationInfo | undefined {
-  return this.housingLocationList().find(loc => loc.id === id);
+  return this.locations().find(loc => loc.id === id);
 }
 
 
 getNextLocation(id: number): HousingLocationInfo | undefined {
-    const list = this.housingLocationList();
+    const list = this.locations();
     const index = list.findIndex(loc => loc.id === id);
     return index !== -1 && index < list.length - 1 ? list[index + 1] : undefined;
 }
 
 getPrevLocation(id: number): HousingLocationInfo | undefined {
-    const list = this.housingLocationList();
+    const list = this.locations();
     const index = list.findIndex(loc => loc.id === id);
     return index > 0 ? list[index - 1] : undefined;
 }
 
 deleteLocation(id: number): void {
-    this.housingLocationList.update(list => list.filter(loc => loc.id !== id));
+    this.locations.update(list => list.filter(loc => loc.id !== id));
+}
+deleteMultipleLocations(ids: number[]): void {
+  this.locations.update(list => list.filter(loc => !ids.includes(loc.id)));
+}
+addLocation(location: HousingLocationInfo): void {
+  this.locations.update(list => [...list, location]);
 }
   
 }
