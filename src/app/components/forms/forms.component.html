@@ -53,12 +53,20 @@
   </form>
 </div> -->
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+   @let firstName = profileForm.controls.firstName;
+
   <label for="firstName">First Name:</label>
   <input id="firstName" formControlName="firstName" />
   <!-- //[formControl]="profileForm.controls.firstName" instead of formControlName also works -->
-
+  @if (firstName.touched && !firstName.valid){
+    <span class="error">First name need to have minimum of 6 characters</span>
+  }
   <label for="lastName">Last Name:</label>
   <input id="lastName" formControlName="lastName" />
+
+  <label for="email">Email:</label>
+  <input id="email" formControlName="email" />
     <h3>ADDRESS</h3>
   <div formGroupName="address">
     <label for="street">Street:</label>
@@ -73,6 +81,7 @@
     <label for="zip">Zip:</label>
     <input id="zip" formControlName="zip" />
   </div>
+  <p>Form Status: {{ profileForm.status }}</p>
    <button  (click)="updateForm()">Update Form</button>
   <button type="submit" [disabled]="!profileForm.valid">Submit</button>
 </form>

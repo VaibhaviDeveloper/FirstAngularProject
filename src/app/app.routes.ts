@@ -3,6 +3,7 @@ import { HomeComponent } from './components/home/home.component';
 import { DetailsComponent } from './components/details/details.component';
 import { LinkedSignalDemoComponent } from '@components/linked-signal-demo/linked-signal-demo.component';
 import { FormsComponent } from '@components/forms/forms.component';
+import { LocationFormComponent } from '@components/location-form/location-form.component';
 
 export const routes: Routes = [
   { 
@@ -14,7 +15,12 @@ export const routes: Routes = [
     {
         path:'home',
         component:HomeComponent,
-        title:'Home'
+        title:'Home',
+        children:[{
+          path:'edit',
+          component:LocationFormComponent,
+          title:'Edit Location'
+        }]
     },
   { path: 'details/:id', //component: DetailsComponent ,
     loadComponent:()=>import('./components/details/details.component').then(m=>m.DetailsComponent)

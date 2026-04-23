@@ -1,5 +1,5 @@
 import { Component, inject, output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators,FormBuilder } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HousingLocationInfo } from '../../models/housing-location-info';
 import { HousingServiceService } from '../../services/housing-service.service';
@@ -47,16 +47,31 @@ export class FormsComponent {
   //   this.addLocationForm.reset();
   //   this.onLocationAdded.emit();                   
   // }
-     profileForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    address: new FormGroup({
-      street: new FormControl(''),
-      city: new FormControl(''),
-      state: new FormControl(''),
-      zip: new FormControl(''),
+      formBuilder=  inject(FormBuilder);
+      
+     profileForm = this.formBuilder.group({
+    firstName: ['' , [Validators.required,Validators.minLength(6)]],
+    lastName: [''],
+    email:['', [Validators.required, Validators.email]],
+    address: this.formBuilder.group({
+      street: [''],
+      city: [''],
+      state: [''],
+      zip: [''],
     }),
   });
+
+
+  //    profileForm = new FormGroup({
+  //   firstName: new FormControl(''),
+  //   lastName: new FormControl(''),
+  //   address: new FormGroup({
+  //     street: new FormControl(''),
+  //     city: new FormControl(''),
+  //     state: new FormControl(''),
+  //     zip: new FormControl(''),
+  //   }),
+  // });
     name = new FormControl('');
 
     handleChange(){

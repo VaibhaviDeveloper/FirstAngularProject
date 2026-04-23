@@ -4,3 +4,8 @@ form{
     gap: 20px;
     width:200px;
 }
+
+.error{
+    color:red;
+    font:3px;
+}

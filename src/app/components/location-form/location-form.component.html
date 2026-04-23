@@ -1,0 +1,51 @@
+<div class="overlay">
+     <div class="panel" [class.show-panel]="shouldShowPanel()">
+           
+@if (shouldShowPanel()) {
+  <section class="form-panel">
+    <h2>Add New Location</h2>
+
+    <form [formGroup]="formData" (ngSubmit)="submitForm()">
+
+      <label for="name">Location name</label>
+      <input id="name" type="text" formControlName="name" placeholder="e.g. Acme Apartments" />
+      @if (formData.controls.name.invalid && formData.controls.name.touched) {
+        <span class="error">Name must be at least 3 characters.</span>
+      }
+
+      <label for="city">City</label>
+      <input id="city" type="text" formControlName="city" placeholder="e.g. Chicago" />
+       @if (formData.controls.city.invalid && formData.controls.city.touched) {
+        <span class="error">City is required.</span>
+       }
+
+      <label for="state">State</label>
+      <input id="state" type="text" formControlName="state" placeholder="e.g. IL" />
+      @if (formData.controls.state.invalid && formData.controls.state.touched) {
+        <span class="error">State is required.</span>
+      }
+
+      <label for="units">Available units</label>
+      <input id="units" type="number" formControlName="availableUnits" min="0" />
+      @if (formData.controls.availableUnits.invalid && formData.controls.availableUnits.touched) {
+        <span class="error">Available units must be a non-negative number.</span>
+      }
+
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="wifi" /> Wi-Fi included
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="laundry" /> Laundry available
+      </label>
+
+      <div class="actions">
+        <button type="submit" [disabled]="!formData.valid">Add Location</button>
+        <button type="button" (click)="hidePanel()">Cancel</button>
+      </div>
+
+    </form>
+  </section>
+}
+     </div>
+</div>

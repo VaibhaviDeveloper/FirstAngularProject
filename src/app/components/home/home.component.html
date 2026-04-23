@@ -1,15 +1,18 @@
 <section>
+  <div class="control-container">
   <form>
-    <input type="text" placeholder="Filter by city" />
+    <input class="search-bar" type="text" placeholder="Filter by city" />
     <button class="primary" type="button">Search</button>
   </form>
+  <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
+  </div>
 </section>
 
 <section class="toolbar">
   <button class="primary" type="button" (click)="toggleMode()">
     {{ mode() === 'normal' ? 'Edit' : 'Done' }}
   </button>
-  <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
+ <!-- // <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button> -->
 
   <!-- @if (mode() === 'normal') {
   <button
@@ -66,3 +69,4 @@
     />
   }
 </section>
+<router-outlet></router-outlet>

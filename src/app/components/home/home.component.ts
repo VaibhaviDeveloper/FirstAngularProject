@@ -1,5 +1,5 @@
 import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
 import { HousingLocationInfo } from '../../models/housing-location-info';
 import { HousingServiceService } from '../../services/housing-service.service';
@@ -10,7 +10,7 @@ type Mode = 'normal' | 'edit';
 
 @Component({
   selector: 'app-home',
-  imports: [HousingLocationComponent, FormsComponent],
+  imports: [HousingLocationComponent, FormsComponent, RouterOutlet],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -31,6 +31,8 @@ justAdded   = signal(false);
   //     isSelected: false
   //   }))
   // );
+
+    private activatedRoute = inject(ActivatedRoute);
 
     locationsToDisplay = linkedSignal<HousingLocationInfo[], HousingLocationViewModel[]>(
   {
@@ -123,17 +125,19 @@ toggleAddForm(): void {
 }
 
 addLocation(): void {
-  const newLocation: HousingLocationInfo = {
-    id: Date.now(),
-    name: 'New Property',
-    city: 'New York',
-    state: 'NY',
-    photo: `${this.housingService.baseUrl}/bernard-hermant-CLKGGwIBTaY-unsplash.jpg`,
-    availableUnits: 3,
-    wifi: true,
-    laundry: false,
-  };
-  this.housingService.addLocation(newLocation);
+  // const newLocation: HousingLocationInfo = {
+  //   id: Date.now(),
+  //   name: 'New Property',
+  //   city: 'New York',
+  //   state: 'NY',
+  //   photo: `${this.housingService.baseUrl}/bernard-hermant-CLKGGwIBTaY-unsplash.jpg`,
+  //   availableUnits: 3,
+  //   wifi: true,
+  //   laundry: false,
+  // };
+  // this.housingService.addLocation(newLocation);
+
+  this.router.navigate(['edit'],{relativeTo:this.activatedRoute });
 }
 }
 // handleLocationAdded(): void {
