@@ -12,39 +12,70 @@ import { HousingServiceService } from '../../services/housing-service.service';
 })
 export class FormsComponent {
 
-  readonly housingService = inject(HousingServiceService);
+  // readonly housingService = inject(HousingServiceService);
 
-  onLocationAdded = output<void>();  // 👈 notify parent when done
+  // onLocationAdded = output<void>();  
 
-  addLocationForm = new FormGroup({
-    name:           new FormControl('', Validators.required),
-    city:           new FormControl('', Validators.required),
-    state:          new FormControl('', Validators.required),
-    availableUnits: new FormControl(0, [Validators.required, Validators.min(0)]),
-    wifi:           new FormControl(false),
-    laundry:        new FormControl(false),
+  // addLocationForm = new FormGroup({
+  //   name:           new FormControl('', Validators.required),
+  //   city:           new FormControl('', Validators.required),
+  //   state:          new FormControl('', Validators.required),
+  //   availableUnits: new FormControl(0, [Validators.required, Validators.min(0)]),
+  //   wifi:           new FormControl(false),
+  //   laundry:        new FormControl(false),
+  // });
+
+  // onSubmit(): void {
+  //   if (this.addLocationForm.invalid) {
+  //     this.addLocationForm.markAllAsTouched();
+  //     return;
+  //   }
+
+  //   const formValue = this.addLocationForm.value;
+  //   const newLocation: HousingLocationInfo = {
+  //     id: Date.now(),
+  //     name: formValue.name!,
+  //     city: formValue.city!,
+  //     state: formValue.state!,
+  //     photo: `https://angular.dev/assets/images/tutorials/common/bernard-hermant-CLKGGwIBTaY-unsplash.jpg`,
+  //     availableUnits: formValue.availableUnits!,
+  //     wifi: formValue.wifi!,
+  //     laundry: formValue.laundry!,
+  //   };
+
+  //   this.housingService.addLocation(newLocation);  
+  //   this.addLocationForm.reset();
+  //   this.onLocationAdded.emit();                   
+  // }
+     profileForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    address: new FormGroup({
+      street: new FormControl(''),
+      city: new FormControl(''),
+      state: new FormControl(''),
+      zip: new FormControl(''),
+    }),
   });
+    name = new FormControl('');
 
-  onSubmit(): void {
-    if (this.addLocationForm.invalid) {
-      this.addLocationForm.markAllAsTouched();
-      return;
+    handleChange(){
+      console.log(this.name.value);
     }
 
-    const formValue = this.addLocationForm.value;
-    const newLocation: HousingLocationInfo = {
-      id: Date.now(),
-      name: formValue.name!,
-      city: formValue.city!,
-      state: formValue.state!,
-      photo: `https://angular.dev/assets/images/tutorials/common/bernard-hermant-CLKGGwIBTaY-unsplash.jpg`,
-      availableUnits: formValue.availableUnits!,
-      wifi: formValue.wifi!,
-      laundry: formValue.laundry!,
-    };
+    updateName(){
+      this.name.setValue('VAIBHAVIIII')
+    }
+    onSubmit() {
+    console.warn(this.profileForm.value);
+  }
 
-    this.housingService.addLocation(newLocation);  // 👈 directly adds to service
-    this.addLocationForm.reset();
-    this.onLocationAdded.emit();                   // 👈 tell parent we're done
+  updateForm(){
+    this.profileForm.patchValue({
+      firstName:'Vaibhavi',
+      address:{
+      city:'Kasaragod'  
+      }
+    })
   }
 }

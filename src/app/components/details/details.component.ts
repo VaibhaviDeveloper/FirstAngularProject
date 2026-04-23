@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HousingServiceService } from '../../services/housing-service.service';
 import { HousingLocationInfo } from '../../models/housing-location-info';
@@ -17,14 +17,15 @@ export class DetailsComponent {
   location      = signal<HousingLocationInfo | undefined>(undefined);
   showConfirm   = signal(false);
 
-  
+ // id = input.required<number>();
   hasPrev = computed(() => !!this.housingService.getPrevLocation(this.location()?.id ?? -1));
   hasNext = computed(() => !!this.housingService.getNextLocation(this.location()?.id ?? -1));
 
   ngOnInit(): void {
    
-    this.route.paramMap.subscribe(params => {
+      this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
+     // const id2= this.id();
       this.location.set(this.housingService.getLocationById(id));
       this.showConfirm.set(false); 
     });

@@ -12,7 +12,7 @@ export class HousingServiceService {
   readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
     
     
-private housingLocationList: HousingLocationInfo[] =[
+private readonly housingLocationList: HousingLocationInfo[] =[
     {
       id: 0,
       name: 'Acme Fresh Start Housing',
@@ -115,11 +115,12 @@ private housingLocationList: HousingLocationInfo[] =[
     },
   ];
 
-readonly locations = signal<HousingLocationInfo[]>(this.housingLocationList);
+private locations = signal<HousingLocationInfo[]>(this.housingLocationList);
 
   getAllLocations(){
-    return this.locations();
+    return this.locations.asReadonly();
   }
+  
   getLocationById(id: number): HousingLocationInfo | undefined {
   return this.locations().find(loc => loc.id === id);
 }

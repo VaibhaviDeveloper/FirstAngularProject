@@ -1,8 +1,21 @@
 <main>
   <header class="brand-name">
+    <nav class="nav-bar">
+    <a routerLink="/">
     <img class="brand-logo" src="/logo.svg" alt="logo" aria-hidden="true" />
+    </a>
+
+     <a routerLink="/linked-signal">
+    <span class="brand-title">Property2</span>
+     </a>
+
+      <a routerLink="/forms">
+    <span class="brand-title">Forms</span>
+     </a>
+    </nav>
   </header>
   <section class="content">
     <router-outlet />
   </section>
 </main>
+

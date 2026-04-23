@@ -34,7 +34,7 @@ justAdded   = signal(false);
 
     locationsToDisplay = linkedSignal<HousingLocationInfo[], HousingLocationViewModel[]>(
   {
-    source: () => this.housingService.locations(),  
+    source:  this.housingService.getAllLocations(),  
     computation: (newLocations, previousValue): HousingLocationViewModel[] => {
       const prevViewModels = (previousValue?.value ?? []) as HousingLocationViewModel[];
       

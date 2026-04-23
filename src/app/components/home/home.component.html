@@ -11,6 +11,23 @@
   </button>
   <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
 
+  <!-- @if (mode() === 'normal') {
+  <button
+    [class]="justAdded() ? 'add-btn added' : 'add-btn'"
+    type="button"
+    (click)="toggleAddForm()"
+  >
+    {{ showAddForm() ? '✕ Cancel' : '+ Add Property' }}
+  </button>
+  @if (justAdded()) {
+    <span class="added-message">Property added successfully!</span>
+  }
+}
+
+@if (showAddForm()) {
+  <app-forms (onLocationAdded)="handleLocationAdded()" />
+} -->
+
   @if (mode() === 'edit') {
     <span class="selection-hint">{{ selectedCount() }} selected</span>
     @if (selectedCount() > 0) {

@@ -5,8 +5,20 @@ import { LinkedSignalDemoComponent } from '@components/linked-signal-demo/linked
 import { FormsComponent } from '@components/forms/forms.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'details/:id', component: DetailsComponent },
+  { 
+    path: '',
+     redirectTo:'home',
+      pathMatch:'full',
+     //component: HomeComponent //path:home , redirectTo:'/'
+    },
+    {
+        path:'home',
+        component:HomeComponent,
+        title:'Home'
+    },
+  { path: 'details/:id', //component: DetailsComponent ,
+    loadComponent:()=>import('./components/details/details.component').then(m=>m.DetailsComponent)
+  },
   {
     path:'linked-signal',
     component:LinkedSignalDemoComponent,
@@ -14,6 +26,7 @@ export const routes: Routes = [
 },
 {
   path:'forms',
-  component:FormsComponent
+  component:FormsComponent,
+  title:'Forms Demo'
 }
 ];
