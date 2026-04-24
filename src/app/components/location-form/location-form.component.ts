@@ -27,6 +27,7 @@ export class LocationFormComponent {
     availableUnits: [0,  [Validators.required, Validators.min(0)]],
     wifi:           [false],
     laundry:        [false],
+    photo:          ['', [Validators.required, Validators.pattern('https?://.+')]],
   });
 
 
@@ -34,16 +35,28 @@ export class LocationFormComponent {
         this.showPanel();
     }
 
-     showPanel(){
+    showPanel(){
         this.shouldShowPanel.set(true);
      }
 
-     hidePanel(){
+    hidePanel(){
+        if(this.formData.dirty){
+          const confirmed = window.confirm('You have unsaved changes. Are you sure you want to cancel?');
+          if(!confirmed) return;
+          }
         this.shouldShowPanel.set(false);
         this.formData.reset();
         this.router.navigate(['/'], { relativeTo: this.activatedRoute });
      }
-     submitForm() {
+
+      onOverlayClick(event: MouseEvent) {
+      if (event.target === event.currentTarget && !this.formData.dirty) {
+      this.shouldShowPanel.set(false);
+      this.router.navigate(['/'], { relativeTo: this.activatedRoute });
+    }
+  }
+
+    submitForm() {
     if (this.formData.invalid) return;
 
     const newLocation: HousingLocationInfo = {
@@ -54,12 +67,11 @@ export class LocationFormComponent {
       availableUnits: this.formData.value.availableUnits!,
       wifi:           this.formData.value.wifi ?? false,
       laundry:        this.formData.value.laundry ?? false,
-      photo:          'https://angular.dev/assets/images/tutorials/common/bernard-hermant-CLKGGwIBTaY-unsplash.jpg',
+      photo:          this.formData.value.photo!,
     };
 
     this.housingService.addLocation(newLocation);
     this.locationAdded.emit();
     this.hidePanel();
-    this.router.navigate(['/'], { relativeTo: this.activatedRoute });
-  }
+    }
 }

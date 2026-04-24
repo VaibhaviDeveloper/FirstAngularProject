@@ -14,8 +14,15 @@ export class HousingLocationComponent {
   mode       = input<'normal' | 'edit'>('normal');
 
   onLocationClick = output<HousingLocationInfo>();
+  editClicked = output<HousingLocationInfo>();
 
   handleClick(): void {
     this.onLocationClick.emit(this.location());
   }
+
+  onEditClick(event: MouseEvent) {
+    event.stopPropagation();
+    this.editClicked.emit(this.location());
+  }
+
 }

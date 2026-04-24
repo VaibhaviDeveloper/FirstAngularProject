@@ -1,4 +1,4 @@
-<button
+<div
   class="container"
   [class.selected]="isSelected()"
   [attr.aria-pressed]="mode() === 'edit' ? isSelected() : null"
@@ -16,5 +16,8 @@
     />
     <h2 class="listing-heading">{{ location().name }}</h2>
     <p class="listing-location">{{ location().city }}, {{ location().state }}</p>
+    @if (mode() === 'edit') {
+  <button class="edit-btn" (click)="onEditClick($event)">Edit</button>
+}
   </section>
-</button>
+</div>

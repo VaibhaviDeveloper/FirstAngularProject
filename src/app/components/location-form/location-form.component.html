@@ -1,10 +1,10 @@
-<div class="overlay">
+<div class="overlay" (click)="onOverlayClick($event)">
      <div class="panel" [class.show-panel]="shouldShowPanel()">
            
 @if (shouldShowPanel()) {
   <section class="form-panel">
     <h2>Add New Location</h2>
-
+    <button type="button" id="cancelButton" (click)="hidePanel()">X</button>
     <form [formGroup]="formData" (ngSubmit)="submitForm()">
 
       <label for="name">Location name</label>
@@ -31,6 +31,18 @@
         <span class="error">Available units must be a non-negative number.</span>
       }
 
+      <label for="photo">Photo URL</label>
+      <input 
+       id="photo" 
+       type="url" 
+       formControlName="photo" 
+       placeholder="https://example.com/image.jpg" 
+       />
+
+@if (formData.controls.photo.invalid && formData.controls.photo.touched) {
+  <span class="error">Please enter a valid image URL.</span>
+}
+
       <label class="checkbox-label">
         <input type="checkbox" formControlName="wifi" /> Wi-Fi included
       </label>
@@ -41,7 +53,6 @@
 
       <div class="actions">
         <button type="submit" [disabled]="!formData.valid">Add Location</button>
-        <button type="button" (click)="hidePanel()">Cancel</button>
       </div>
 
     </form>
