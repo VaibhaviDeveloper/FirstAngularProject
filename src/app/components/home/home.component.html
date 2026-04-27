@@ -1,35 +1,25 @@
 <section>
   <div class="control-container">
-  <form>
-    <input class="search-bar" type="text" placeholder="Filter by city" />
-    <button class="primary" type="button">Search</button>
-  </form>
-  <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
+    <form>
+      <input class="search-bar" type="text" placeholder="Filter by city" />
+      <button class="primary" type="button">Search</button>
+    </form>
+    <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
   </div>
 </section>
 
 <section class="toolbar">
-  <button class="primary" type="button" (click)="toggleMode()">
-    {{ mode() === 'normal' ? 'Edit' : 'Done' }}
-  </button>
- <!-- // <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button> -->
-
-  <!-- @if (mode() === 'normal') {
-  <button
-    [class]="justAdded() ? 'add-btn added' : 'add-btn'"
-    type="button"
-    (click)="toggleAddForm()"
-  >
-    {{ showAddForm() ? '✕ Cancel' : '+ Add Property' }}
-  </button>
-  @if (justAdded()) {
-    <span class="added-message">Property added successfully!</span>
-  }
-}
-
-@if (showAddForm()) {
-  <app-forms (onLocationAdded)="handleLocationAdded()" />
-} -->
+  <div class="toggle-label">{{ mode() === 'edit' ? 'Edit Mode' : 'Normal Mode' }}
+    
+    <label class="toggle-switch">
+      <input 
+        type="checkbox" 
+        [checked]="mode() === 'edit'"
+        (change)="toggleMode()"
+      />
+      <span class="slider"></span>
+    </label>
+  </div>
 
   @if (mode() === 'edit') {
     <span class="selection-hint">{{ selectedCount() }} selected</span>
@@ -39,16 +29,13 @@
       </button>
     }
   }
-  <!-- @if (mode()==='normal') {
-    <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
-  } -->
 </section>
 
 @if (showConfirm()) {
   <div class="overlay">
     <div class="confirm-dialog">
       <h2>Delete Properties?</h2>
-      <p>Are you sure you want to delete 
+      <p>Are you sure you want to delete
         <strong>{{ selectedCount() }} propert{{ selectedCount() === 1 ? 'y' : 'ies' }}</strong>?
       </p>
       <div class="confirm-actions">
@@ -66,7 +53,22 @@
       [isSelected]="housingLocation.isSelected"
       [mode]="mode()"
       (onLocationClick)="handleLocationClicked($event)"
+      (editClicked)="onEditClicked($event)"
     />
   }
 </section>
+
+@if (showAddForm()) {
+  <app-location-form
+    (locationAdded)="onLocationAdded()"
+  />
+}
+
+@if (locationToEdit()) {
+  <app-location-form
+    [location]="locationToEdit()"
+    (locationUpdated)="onLocationUpdated()"
+  />
+}
+
 <router-outlet></router-outlet>

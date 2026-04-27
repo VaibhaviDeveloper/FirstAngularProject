@@ -1,7 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 2px solid transparent;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 30px;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;        
+  border-radius: 30px 30px 0 0;
+}
+
+.listing-photo {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .listing {
+  position: relative;
   background: var(--accent-color);
   border-radius: 30px;
   padding-bottom: 30px;
+  height: 100%;         
+  display: flex;
+  flex-direction: column;
 }
 .listing-heading {
   color: var(--primary-color);
@@ -19,17 +53,22 @@
   justify-content: center;
   padding: 10px 20px 20px 20px;
 }
+
+
+
 .listing-location::before {
   content: url('/location-pin.svg') / '';
 }
 .wifi-badge {
-  display: inline-block;
+  position: absolute;  
+  top: 12px;
+  left: 12px;
   padding: 4px 10px;
-  margin: 10px 20px 0;
   background: var(--primary-color);
   color: white;
   border-radius: 20px;
   font-size: 0.75rem;
+  z-index: 1;
 }
 .container {
   display: inline-block;
@@ -53,4 +92,27 @@
 .container.selected {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px var(--secondary-color);
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.edit-btn:hover {
+  background-color: #4338ca;
+}
+
+.listing {
+  position: relative;
 }

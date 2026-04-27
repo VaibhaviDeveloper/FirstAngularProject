@@ -147,5 +147,9 @@ deleteMultipleLocations(ids: number[]): void {
 addLocation(location: HousingLocationInfo): void {
   this.locations.update(list => [...list, location]);
 }
-  
+updateLocation(updated: HousingLocationInfo): void {
+  this.locations.update(list => 
+    list.map(loc => loc.id === updated.id ? updated : loc)
+  );
+}
 }

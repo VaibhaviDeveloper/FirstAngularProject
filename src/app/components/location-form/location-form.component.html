@@ -1,62 +1,74 @@
 <div class="overlay" (click)="onOverlayClick($event)">
-     <div class="panel" [class.show-panel]="shouldShowPanel()">
-           
-@if (shouldShowPanel()) {
-  <section class="form-panel">
-    <h2>Add New Location</h2>
-    <button type="button" id="cancelButton" (click)="hidePanel()">X</button>
-    <form [formGroup]="formData" (ngSubmit)="submitForm()">
+  <div class="panel" [class.show-panel]="shouldShowPanel()">
 
-      <label for="name">Location name</label>
-      <input id="name" type="text" formControlName="name" placeholder="e.g. Acme Apartments" />
-      @if (formData.controls.name.invalid && formData.controls.name.touched) {
-        <span class="error">Name must be at least 3 characters.</span>
-      }
+    @if (shouldShowPanel()) {
+      <section
+        class="form-panel"
+        cdkTrapFocus
+        [cdkTrapFocusAutoCapture]="true"
+      >
+        <h2>{{ isEditMode() ? 'Edit Location' : 'Add New Location' }}</h2>
+        <button type="button" id="cancelButton" (click)="hidePanel()">✕</button>
 
-      <label for="city">City</label>
-      <input id="city" type="text" formControlName="city" placeholder="e.g. Chicago" />
-       @if (formData.controls.city.invalid && formData.controls.city.touched) {
-        <span class="error">City is required.</span>
-       }
+        <form [formGroup]="formData" (ngSubmit)="submitForm()">
 
-      <label for="state">State</label>
-      <input id="state" type="text" formControlName="state" placeholder="e.g. IL" />
-      @if (formData.controls.state.invalid && formData.controls.state.touched) {
-        <span class="error">State is required.</span>
-      }
+          <div class="form-group">
+            <label for="name">Location name</label>
+            <input id="name" type="text" formControlName="name" placeholder="e.g. Acme Apartments" />
+            @if (formData.controls.name.invalid && formData.controls.name.touched) {
+              <span class="error">Name must be at least 3 characters.</span>
+            }
+          </div>
 
-      <label for="units">Available units</label>
-      <input id="units" type="number" formControlName="availableUnits" min="0" />
-      @if (formData.controls.availableUnits.invalid && formData.controls.availableUnits.touched) {
-        <span class="error">Available units must be a non-negative number.</span>
-      }
+          <div class="form-group">
+            <label for="city">City</label>
+            <input id="city" type="text" formControlName="city" placeholder="e.g. Chicago" />
+            @if (formData.controls.city.invalid && formData.controls.city.touched) {
+              <span class="error">City is required.</span>
+            }
+          </div>
 
-      <label for="photo">Photo URL</label>
-      <input 
-       id="photo" 
-       type="url" 
-       formControlName="photo" 
-       placeholder="https://example.com/image.jpg" 
-       />
+          <div class="form-group">
+            <label for="state">State</label>
+            <input id="state" type="text" formControlName="state" placeholder="e.g. IL" />
+            @if (formData.controls.state.invalid && formData.controls.state.touched) {
+              <span class="error">State is required.</span>
+            }
+          </div>
 
-@if (formData.controls.photo.invalid && formData.controls.photo.touched) {
-  <span class="error">Please enter a valid image URL.</span>
-}
+          <div class="form-group">
+            <label for="units">Available units</label>
+            <input id="units" type="number" formControlName="availableUnits" min="0" />
+            @if (formData.controls.availableUnits.invalid && formData.controls.availableUnits.touched) {
+              <span class="error">Available units must be a non-negative number.</span>
+            }
+          </div>
 
-      <label class="checkbox-label">
-        <input type="checkbox" formControlName="wifi" /> Wi-Fi included
-      </label>
+          <div class="form-group">
+            <label for="photo">Photo URL</label>
+            <input id="photo" type="url" formControlName="photo" placeholder="https://example.com/image.jpg" />
+            @if (formData.controls.photo.invalid && formData.controls.photo.touched) {
+              <span class="error">Please enter a valid image URL.</span>
+            }
+          </div>
 
-      <label class="checkbox-label">
-        <input type="checkbox" formControlName="laundry" /> Laundry available
-      </label>
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="wifi" /> Wi-Fi included
+          </label>
 
-      <div class="actions">
-        <button type="submit" [disabled]="!formData.valid">Add Location</button>
-      </div>
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="laundry" /> Laundry available
+          </label>
 
-    </form>
-  </section>
-}
-     </div>
+          <div class="actions">
+            <button type="submit" [disabled]="!formData.valid">
+              {{ isEditMode() ? 'Save Changes' : 'Add Location' }}
+            </button>
+          </div>
+
+        </form>
+      </section>
+    }
+
+  </div>
 </div>
