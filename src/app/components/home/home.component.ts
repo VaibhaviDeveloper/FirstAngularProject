@@ -5,12 +5,16 @@ import { HousingLocationInfo } from '../../models/housing-location-info';
 import { HousingServiceService } from '../../services/housing-service.service';
 import { HousingLocationViewModel } from '../housing-location/housing-location-view-model';
 import { LocationFormComponent } from '../location-form/location-form.component';
+import { DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, switchMap, debounceTime, distinctUntilChanged, filter } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 type Mode = 'normal' | 'edit';
 
 @Component({
   selector: 'app-home',
-  imports: [HousingLocationComponent, RouterOutlet, LocationFormComponent],
+   imports: [HousingLocationComponent, RouterOutlet, LocationFormComponent, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -19,6 +23,10 @@ export class HomeComponent {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   readonly housingService = inject(HousingServiceService);
+  private destroyRef = inject(DestroyRef);
+
+   private searchSubject = new Subject<string>();
+
 
   mode           = signal<Mode>('normal');
   showConfirm    = signal(false);
@@ -42,6 +50,24 @@ export class HomeComponent {
   selectedCount = computed(() =>
     this.locationsToDisplay().filter(loc => loc.isSelected).length
   );
+
+  ngOnInit() {
+  this.searchSubject.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    filter(query => query.length === 0 || query.length >= 3),
+    switchMap(query => this.housingService.searchLocations(query)),
+    takeUntilDestroyed(this.destroyRef)
+  ).subscribe(results => {
+    this.locationsToDisplay.set(
+      results.map(location => ({ ...location, isSelected: false }))
+    );
+  });
+
+  // ← trigger initial load with empty query
+  this.searchSubject.next('');
+}
+
 
   toggleMode(): void {
     if (this.mode() === 'edit') {
@@ -94,4 +120,9 @@ export class HomeComponent {
   onLocationUpdated(): void {
     this.locationToEdit.set(null);
   }
+  searchQuery = '';  
+
+   onSearchInput(query: string) {
+  this.searchSubject.next(query);
+}
 }

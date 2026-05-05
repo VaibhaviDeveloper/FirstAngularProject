@@ -14,7 +14,7 @@ input[type="text"] {
   border-radius: 8px;
   margin-right: 4px;
   display: inline-block;
-  width: 30%;
+  width: 400px;
 }
 
 .control-container{
@@ -51,6 +51,8 @@ button {
   font-size: 14px;
   font-weight: 600;
   color: #4f46e5;
+ line-height: 26px;         
+  margin: 0;
 }
 
 .toggle-switch {
@@ -58,6 +60,7 @@ button {
   display: inline-block;
   width: 48px;
   height: 26px;
+  vertical-align: middle
 }
 
 .toggle-switch input {

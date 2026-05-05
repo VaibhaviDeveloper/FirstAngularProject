@@ -1,5 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HousingLocationInfo } from '../models/housing-location-info';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 //Telling angualar's injector sustem , that it should create an instance of HousingServiceService when it is required and that this instance should be shared across the entire application.
 
@@ -151,5 +153,18 @@ updateLocation(updated: HousingLocationInfo): void {
   this.locations.update(list => 
     list.map(loc => loc.id === updated.id ? updated : loc)
   );
+}
+searchLocations(query: string): Observable<HousingLocationInfo[]> {
+  if (!query) {
+    return of(this.locations());
+  }
+
+  const q = query.toLowerCase();
+  const results = this.locations().filter(loc =>
+    loc.city.toLowerCase().includes(q) ||
+    loc.name.toLowerCase().includes(q) ||
+    loc.state.toLowerCase().includes(q)
+  );
+  return of(results).pipe(delay(200));
 }
 }
