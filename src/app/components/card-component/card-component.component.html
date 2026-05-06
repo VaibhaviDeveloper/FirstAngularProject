@@ -1,0 +1,28 @@
+<!-- card-layout.component.html -->
+<div class="card-wrapper">
+
+  <!-- slot 1 — named header slot -->
+  <div class="card-header-area">
+    <ng-content select="card-header">
+      <!-- fallback content if no header provided -->
+      <span class="default-header">🏠 Housing Location</span>
+    </ng-content>
+  </div>
+
+  <!-- divider -->
+  <div class="card-divider"></div>
+
+  <!-- slot 2 — main content (catches everything that doesn't match other slots) -->
+  <div class="card-body-area">
+    <ng-content />
+  </div>
+
+  <!-- slot 3 — named footer slot -->
+  <div class="card-footer-area">
+    <ng-content select="card-footer">
+      <!-- fallback content if no footer provided -->
+      <span class="default-footer">View Details →</span>
+    </ng-content>
+  </div>
+
+</div>

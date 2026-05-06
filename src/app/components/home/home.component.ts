@@ -9,23 +9,38 @@ import { DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, switchMap, debounceTime, distinctUntilChanged, filter } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { CardComponentComponent } from '@components/card-component/card-component.component';
+import { CardFooter } from '@components/card-component/card-footer.component';
+import { CardHeader } from '@components/card-component/card-header.component';
+import { LocationTableComponent } from '../location-table/location-table.component';
 
 type Mode = 'normal' | 'edit';
 
 @Component({
   selector: 'app-home',
-   imports: [HousingLocationComponent, RouterOutlet, LocationFormComponent, FormsModule],
+   imports: [HousingLocationComponent, RouterOutlet, LocationFormComponent, FormsModule, CardComponentComponent, CardHeader, CardFooter, LocationTableComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+
+ isDesktop = signal<boolean>(window.innerWidth >= 1024);
+
+  constructor() {
+    // listen for window resize
+    window.addEventListener('resize', () => {
+      this.isDesktop.set(window.innerWidth >= 1024);
+    });
+  }
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   readonly housingService = inject(HousingServiceService);
   private destroyRef = inject(DestroyRef);
 
-   private searchSubject = new Subject<string>();
+  private searchSubject = new Subject<string>();
+
+  searchQuery = ''; 
 
 
   mode           = signal<Mode>('normal');
@@ -56,7 +71,7 @@ export class HomeComponent {
     debounceTime(300),
     distinctUntilChanged(),
     filter(query => query.length === 0 || query.length >= 3),
-    switchMap(query => this.housingService.searchLocations(query)),
+    switchMap(query => this.housingService.searchLocations(query.trim())),
     takeUntilDestroyed(this.destroyRef)
   ).subscribe(results => {
     this.locationsToDisplay.set(
@@ -64,7 +79,7 @@ export class HomeComponent {
     );
   });
 
-  // ← trigger initial load with empty query
+  // trigger initial load with empty query
   this.searchSubject.next('');
 }
 
@@ -120,9 +135,8 @@ export class HomeComponent {
   onLocationUpdated(): void {
     this.locationToEdit.set(null);
   }
-  searchQuery = '';  
-
-   onSearchInput(query: string) {
-  this.searchSubject.next(query);
+ 
+  onSearchInput(query: string) {
+  this.searchSubject.next(query.trim());
 }
 }

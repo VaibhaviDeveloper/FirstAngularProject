@@ -4,7 +4,7 @@
     <input
   class="search-bar"
   type="text"
-  placeholder="Filter by city"
+  placeholder="Filter by city or name"
   name="search"
   [(ngModel)]="searchQuery"
   (ngModelChange)="onSearchInput($event)"
@@ -55,6 +55,9 @@
 
 <section class="results">
   @for (housingLocation of locationsToDisplay(); track housingLocation.id) {
+    <app-card-component>
+      <h3 ngProjectAs="card-header">📍 My Title</h3>
+      <card-header>📍 Featured Property</card-header>
     <app-housing-location
       [location]="housingLocation"
       [isSelected]="housingLocation.isSelected"
@@ -62,6 +65,8 @@
       (onLocationClick)="handleLocationClicked($event)"
       (editClicked)="onEditClicked($event)"
     />
+    <card-footer>Available Now</card-footer>
+    </app-card-component>
   }
 </section>
 
@@ -75,6 +80,30 @@
   <app-location-form
     [location]="locationToEdit()"
     (locationUpdated)="onLocationUpdated()"
+  />
+}
+
+<!-- card view — mobile -->
+@if (!isDesktop()) {
+  <section class="results">
+    @for (housingLocation of locationsToDisplay(); track housingLocation.id) {
+      <app-card-layout>
+        <app-housing-location
+          [location]="housingLocation"
+          [isSelected]="housingLocation.isSelected"
+          [mode]="mode()"
+          (onLocationClick)="handleLocationClicked($event)"
+          (editClicked)="onEditClicked($event)"
+        />
+      </app-card-layout>
+    }
+  </section>
+}
+
+<!-- table view — desktop -->
+@if (isDesktop()) {
+  <app-location-table
+    [locations]="locationsToDisplay()"
   />
 }
 

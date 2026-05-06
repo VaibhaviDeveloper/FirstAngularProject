@@ -1,0 +1,39 @@
+<!-- location-table.component.html -->
+<p-table 
+  [value]="locations()" 
+  [paginator]="true" 
+  [rows]="10"
+  styleClass="p-datatable-striped">
+
+  <!-- header template — uses ng-template with pTemplate="header" -->
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Available Units</th>
+      <th>WiFi</th>
+      <th>Laundry</th>
+    </tr>
+  </ng-template>
+
+  <!-- body template — let-location gives access to each row -->
+  <ng-template pTemplate="body" let-location>
+    <tr>
+      <td>{{ location.name }}</td>
+      <td>{{ location.city }}</td>
+      <td>{{ location.state }}</td>
+      <td>{{ location.availableUnits }}</td>
+      <td>{{ location.wifi ? '✅' : '❌' }}</td>
+      <td>{{ location.laundry ? '✅' : '❌' }}</td>
+    </tr>
+  </ng-template>
+
+  <!-- empty message — fallback when no data -->
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6">No locations found.</td>
+    </tr>
+  </ng-template>
+
+</p-table>
