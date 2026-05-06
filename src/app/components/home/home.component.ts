@@ -18,7 +18,8 @@ type Mode = 'normal' | 'edit';
 
 @Component({
   selector: 'app-home',
-   imports: [HousingLocationComponent, RouterOutlet, LocationFormComponent, FormsModule, CardComponentComponent, CardHeader, CardFooter, LocationTableComponent],
+  standalone: true,
+  imports: [HousingLocationComponent, RouterOutlet, LocationFormComponent, FormsModule, CardComponentComponent, CardHeader, CardFooter, LocationTableComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

@@ -87,7 +87,7 @@
 @if (!isDesktop()) {
   <section class="results">
     @for (housingLocation of locationsToDisplay(); track housingLocation.id) {
-      <app-card-layout>
+      <app-card-component>
         <app-housing-location
           [location]="housingLocation"
           [isSelected]="housingLocation.isSelected"
@@ -95,7 +95,7 @@
           (onLocationClick)="handleLocationClicked($event)"
           (editClicked)="onEditClicked($event)"
         />
-      </app-card-layout>
+      </app-card-component>
     }
   </section>
 }

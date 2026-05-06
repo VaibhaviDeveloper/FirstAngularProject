@@ -5,7 +5,7 @@
   [rows]="10"
   styleClass="p-datatable-striped">
 
-  <!-- header template — uses ng-template with pTemplate="header" -->
+ 
   <ng-template pTemplate="header">
     <tr>
       <th>Name</th>
@@ -17,7 +17,7 @@
     </tr>
   </ng-template>
 
-  <!-- body template — let-location gives access to each row -->
+ 
   <ng-template pTemplate="body" let-location>
     <tr>
       <td>{{ location.name }}</td>
@@ -29,7 +29,7 @@
     </tr>
   </ng-template>
 
-  <!-- empty message — fallback when no data -->
+  
   <ng-template pTemplate="emptymessage">
     <tr>
       <td colspan="6">No locations found.</td>
