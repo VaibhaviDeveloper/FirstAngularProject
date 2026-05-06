@@ -1,0 +1,110 @@
+<section>
+  <div class="control-container">
+    <form>
+    <input
+  class="search-bar"
+  type="text"
+  placeholder="Filter by city or name"
+  name="search"
+  [(ngModel)]="searchQuery"
+  (ngModelChange)="onSearchInput($event)"
+/>
+      <button class="primary" type="button">Search</button>
+    </form>
+    <button class="add-btn" type="button" (click)="addLocation()">+ Add New Property</button>
+  </div>
+</section>
+
+<section class="toolbar">
+  <div class="toggle-label">Edit Mode
+    
+    <label class="toggle-switch">
+      <input 
+        type="checkbox" 
+        [checked]="mode() === 'edit'"
+        (change)="toggleMode()"
+      />
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  @if (mode() === 'edit') {
+    <span class="selection-hint">{{ selectedCount() }} selected</span>
+    @if (selectedCount() > 0) {
+      <button class="delete-selected-btn" (click)="requestDeleteSelected()">
+        🗑 Delete ({{ selectedCount() }})
+      </button>
+    }
+  }
+</section>
+
+@if (showConfirm()) {
+  <div class="overlay">
+    <div class="confirm-dialog">
+      <h2>Delete Properties?</h2>
+      <p>Are you sure you want to delete
+        <strong>{{ selectedCount() }} propert{{ selectedCount() === 1 ? 'y' : 'ies' }}</strong>?
+      </p>
+      <div class="confirm-actions">
+        <button class="cancel-btn" (click)="cancelDelete()">Cancel</button>
+        <button class="confirm-btn" (click)="confirmDeleteSelected()">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+}
+
+<section class="results">
+  @for (housingLocation of locationsToDisplay(); track housingLocation.id) {
+    <app-card-component>
+      <h3 ngProjectAs="card-header">📍 My Title</h3>
+      <card-header>📍 Featured Property</card-header>
+    <app-housing-location
+      [location]="housingLocation"
+      [isSelected]="housingLocation.isSelected"
+      [mode]="mode()"
+      (onLocationClick)="handleLocationClicked($event)"
+      (editClicked)="onEditClicked($event)"
+    />
+    <card-footer>Available Now</card-footer>
+    </app-card-component>
+  }
+</section>
+
+@if (showAddForm()) {
+  <app-location-form
+    (locationAdded)="onLocationAdded()"
+  />
+}
+
+@if (locationToEdit()) {
+  <app-location-form
+    [location]="locationToEdit()"
+    (locationUpdated)="onLocationUpdated()"
+  />
+}
+
+<!-- card view — mobile -->
+@if (!isDesktop()) {
+  <section class="results">
+    @for (housingLocation of locationsToDisplay(); track housingLocation.id) {
+      <app-card-component>
+        <app-housing-location
+          [location]="housingLocation"
+          [isSelected]="housingLocation.isSelected"
+          [mode]="mode()"
+          (onLocationClick)="handleLocationClicked($event)"
+          (editClicked)="onEditClicked($event)"
+        />
+      </app-card-component>
+    }
+  </section>
+}
+
+<!-- table view — desktop -->
+@if (isDesktop()) {
+  <app-location-table
+    [locations]="locationsToDisplay()"
+  />
+}
+
+<router-outlet></router-outlet>

@@ -1,0 +1,23 @@
+<div
+  class="container"
+  [class.selected]="isSelected()"
+  [attr.aria-pressed]="mode() === 'edit' ? isSelected() : null"
+  (click)="handleClick()"
+>
+  <section class="listing">
+    @if (location().wifi) {
+      <span class="wifi-badge">📶 WiFi Available</span>
+    }
+    <img
+      class="listing-photo"
+      [src]="location().photo"
+      alt="Exterior photo of {{ location().name }}"
+      crossorigin
+    />
+    <h2 class="listing-heading">{{ location().name }}</h2>
+    <p class="listing-location">{{ location().city }}, {{ location().state }}</p>
+    @if (mode() === 'edit') {
+  <button class="edit-btn" (click)="onEditClick($event)">Edit</button>
+}
+  </section>
+</div>

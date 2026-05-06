@@ -1,0 +1,95 @@
+<!-- <div class="add-form-container">
+  <h2>Add New Property</h2>
+  <form [formGroup]="addLocationForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-field">
+      <label>Name</label>
+      <input type="text" formControlName="name" placeholder="Property name" />
+      @if (addLocationForm.get('name')?.invalid && addLocationForm.get('name')?.touched) {
+        <span class="error">Name is required</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label>City</label>
+      <input type="text" formControlName="city" placeholder="City" />
+      @if (addLocationForm.get('city')?.invalid && addLocationForm.get('city')?.touched) {
+        <span class="error">City is required</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label>State</label>
+      <input type="text" formControlName="state" placeholder="State" />
+      @if (addLocationForm.get('state')?.invalid && addLocationForm.get('state')?.touched) {
+        <span class="error">State is required</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label>Available Units</label>
+      <input type="number" formControlName="availableUnits" />
+      @if (addLocationForm.get('availableUnits')?.invalid && addLocationForm.get('availableUnits')?.touched) {
+        <span class="error">Must be 0 or more</span>
+      }
+    </div>
+
+    <div class="form-field checkbox-field">
+      <label>
+        <input type="checkbox" formControlName="wifi" /> WiFi Available
+      </label>
+    </div>
+
+    <div class="form-field checkbox-field">
+      <label>
+        <input type="checkbox" formControlName="laundry" /> Laundry Available
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="primary">Add Property</button>
+    </div>
+
+  </form>
+</div> -->
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+   @let firstName = profileForm.controls.firstName;
+
+  <label for="firstName">First Name:</label>
+  <input id="firstName" formControlName="firstName" />
+  <!-- //[formControl]="profileForm.controls.firstName" instead of formControlName also works -->
+  @if (firstName.touched && !firstName.valid){
+    <span class="error">First name need to have minimum of 6 characters</span>
+  }
+  <label for="lastName">Last Name:</label>
+  <input id="lastName" formControlName="lastName" />
+
+  <label for="email">Email:</label>
+  <input id="email" formControlName="email" />
+    <h3>ADDRESS</h3>
+  <div formGroupName="address">
+    <label for="street">Street:</label>
+    <input id="street" formControlName="street" />
+
+    <label for="city">City:</label>
+    <input id="city" formControlName="city" />
+
+    <label for="state">State:</label>
+    <input id="state" formControlName="state" />
+    <br>
+    <label for="zip">Zip:</label>
+    <input id="zip" formControlName="zip" />
+  </div>
+  <p>Form Status: {{ profileForm.status }}</p>
+   <button  (click)="updateForm()">Update Form</button>
+  <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+</form>
+<br>
+<label for="name">Name: </label>
+<input id="name" type="text" [formControl]="name" (change)="handleChange()"/>
+
+<p>Value: {{ name.value }}</p>
+
+
+<button (click)="updateName()">Update Name</button>

@@ -1,0 +1,5 @@
+event.target
+The actual element that was clicked
+Deepest element in the DOM
+event.currentTarget
+The element where the event listener is attached
